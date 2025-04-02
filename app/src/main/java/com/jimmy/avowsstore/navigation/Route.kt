@@ -7,4 +7,16 @@ sealed class Route {
     data object Auth: Route()
     @Serializable
     data object Login: Route()
+    @Serializable
+    data object Main: Route()
+    @Serializable
+    data object Products: Route()
+    @Serializable
+    data class ProductDetail(val id: Int): Route()
+    @Serializable
+    data object Cart: Route()
+    @Serializable
+    data object Summary: Route()
+    @Serializable
+    data object Profile: Route()
 }

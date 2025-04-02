@@ -44,7 +44,7 @@ object HttpClientFactory {
 
             defaultRequest {
                 contentType(ContentType.Application.Json)
-                header("x-api-key", BuildConfig.API_KEY)
+                //header("x-api-key", BuildConfig.API_KEY)
 
             }
         }

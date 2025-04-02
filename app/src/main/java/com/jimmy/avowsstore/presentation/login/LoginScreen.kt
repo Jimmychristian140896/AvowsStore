@@ -20,13 +20,16 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import androidx.navigation.NavHostController
 import com.jimmy.avowsstore.core.composable.ObserveAsEvents
 import com.jimmy.avowsstore.core.composable.ValidationTextField
 import com.jimmy.avowsstore.core.ui.showToast
+import com.jimmy.avowsstore.navigation.Route
 import org.koin.androidx.compose.koinViewModel
 
 @Composable
 fun LoginScreenRoot(
+    navHostController: NavHostController,
     modifier: Modifier = Modifier) {
     val viewModel: LoginViewModel = koinViewModel()
     val state by viewModel.state.collectAsStateWithLifecycle()
@@ -35,10 +38,12 @@ fun LoginScreenRoot(
     ObserveAsEvents(viewModel.eventChannel) { event ->
         when(event) {
             is LoginEvent.OnLoginFailed -> {
+                context.showToast(event.message.asString(context))
 
             }
             LoginEvent.OnLoginSuccess -> {
                 context.showToast("Login Success")
+                navHostController.navigate(Route.Main)
             }
         }
     }

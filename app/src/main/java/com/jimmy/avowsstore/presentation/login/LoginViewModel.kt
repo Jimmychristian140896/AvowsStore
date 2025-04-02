@@ -6,6 +6,7 @@ import com.jimmy.avowsstore.core.data.asUiText
 import com.jimmy.avowsstore.core.data.onFailure
 import com.jimmy.avowsstore.core.data.onSuccess
 import com.jimmy.avowsstore.domain.model.User
+import com.jimmy.avowsstore.domain.repository.AuthRepository
 import com.jimmy.avowsstore.domain.repository.UserRepository
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -14,7 +15,7 @@ import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.launch
 
 class LoginViewModel(
-    private val userRepository: UserRepository
+    private val authRepository: AuthRepository
 ): ViewModel() {
     private val _state = MutableStateFlow(LoginState())
     val state = _state.asStateFlow()
@@ -51,11 +52,9 @@ class LoginViewModel(
                 isLoading = true
             )
 
-            userRepository.upsertUser(
-                User(
-                    username = _state.value.username,
-                    password = _state.value.password
-                )
+            authRepository.login(
+                username = _state.value.username,
+                password = _state.value.password
             ).onSuccess {
                 _state.value = _state.value.copy(
                     isLoading = false
