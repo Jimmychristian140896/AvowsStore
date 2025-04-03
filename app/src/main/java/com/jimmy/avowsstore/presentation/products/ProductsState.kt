@@ -13,5 +13,8 @@ data class ProductsState(
     val categories: List<ProductCategory> = emptyList(),
     val products: List<Product> = emptyList(),
     val selectedCategory: ProductCategory? = null,
-    val showProfileDialog: Boolean = false
+    val showProfileDialog: Boolean = false,
+    val isLoadingCartCount: Boolean = false,
+    val errorCartCount: UiText? = null,
+    val cartCount: Int = 0
 )

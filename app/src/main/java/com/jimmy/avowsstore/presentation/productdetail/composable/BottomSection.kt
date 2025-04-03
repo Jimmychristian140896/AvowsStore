@@ -4,9 +4,11 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
@@ -33,7 +35,9 @@ fun BottomSection(
     ) {
         Button(
             onClick = {
-
+                if(!state.isLoadingAddToCart) {
+                    onAction(ProductDetailAction.OnAddToCart)
+                }
             },
             modifier = Modifier
                 .fillMaxWidth(),
@@ -43,12 +47,19 @@ fun BottomSection(
             ),
             shape = RoundedCornerShape(8.dp)
         ) {
-            Text(
-                text = "+ Keranjang",
-                color = White,
-                fontSize = 14.sp,
-                fontWeight = FontWeight.Bold
-            )
+            if(state.isLoadingAddToCart) {
+                CircularProgressIndicator(
+                    modifier = Modifier
+                        .size(16.dp)
+                )
+            } else {
+                Text(
+                    text = "+ Keranjang",
+                    color = White,
+                    fontSize = 14.sp,
+                    fontWeight = FontWeight.Bold
+                )
+            }
         }
     }
 

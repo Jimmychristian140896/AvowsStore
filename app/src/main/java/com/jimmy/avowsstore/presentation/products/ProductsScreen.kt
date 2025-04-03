@@ -35,6 +35,9 @@ fun ProductsScreenRoot(
             is ProductsEvent.ProfileClicked -> {
                 navHostController.navigate(Route.Profile)
             }
+            is ProductsEvent.CartClicked -> {
+                navHostController.navigate(Route.Cart)
+            }
             else -> {
             }
         }
@@ -70,14 +73,18 @@ fun ProductsScreen(
             state = state,
             onAction = onAction
         )
+
         CategorySection(
             state = state,
             onAction = onAction
         )
+
+
         ProductsSection(
             state = state,
             onAction = onAction
         )
+
     }
     if(state.showProfileDialog) {
         ProfileScreenBottomSheet(

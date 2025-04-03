@@ -15,6 +15,7 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
 import com.jimmy.avowsstore.core.composable.ObserveAsEvents
+import com.jimmy.avowsstore.navigation.Route
 import com.jimmy.avowsstore.presentation.cart.composable.BottomSection
 import com.jimmy.avowsstore.presentation.cart.composable.CartSection
 import com.jimmy.avowsstore.presentation.cart.composable.HeaderSection
@@ -30,6 +31,13 @@ fun CartScreenRoot(
 
     ObserveAsEvents(viewModel.eventChannel) { event ->
         when (event) {
+            is CartEvent.OnCheckout -> {
+                navHostController.navigate(Route.Summary(event.id))
+            }
+
+            CartEvent.NavigateBack -> {
+                navHostController.navigateUp()
+            }
             else -> {
             }
         }

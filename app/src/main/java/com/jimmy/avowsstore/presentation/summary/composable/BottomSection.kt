@@ -1,4 +1,4 @@
-package com.jimmy.avowsstore.presentation.cart.composable
+package com.jimmy.avowsstore.presentation.summary.composable
 
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -6,7 +6,6 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.wrapContentSize
-import androidx.compose.foundation.layout.wrapContentWidth
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
@@ -22,16 +21,16 @@ import androidx.compose.ui.unit.sp
 import com.jimmy.avowsstore.core.util.toFormattedCurrency
 import com.jimmy.avowsstore.presentation.cart.CartAction
 import com.jimmy.avowsstore.presentation.cart.CartState
-import com.jimmy.avowsstore.presentation.productdetail.ProductDetailAction
-import com.jimmy.avowsstore.presentation.productdetail.ProductDetailState
+import com.jimmy.avowsstore.presentation.summary.SummaryAction
+import com.jimmy.avowsstore.presentation.summary.SummaryState
 import com.jimmy.avowsstore.ui.theme.Black
 import com.jimmy.avowsstore.ui.theme.Green
 
 
 @Composable
 fun BottomSection(
-    state: CartState,
-    onAction: (CartAction) -> Unit,
+    state: SummaryState,
+    onAction: (SummaryAction) -> Unit,
     modifier: Modifier = Modifier
 ) {
 
@@ -42,32 +41,19 @@ fun BottomSection(
         verticalAlignment = Alignment.CenterVertically
     ) {
 
-        Text(
-            text = state.cart?.products?.sumOf { it.price*it.quantity }?.toFormattedCurrency() ?: "",
-            color = Black,
-            fontSize = 18.sp,
-            fontWeight = FontWeight.Bold,
-            textAlign = TextAlign.End,
-            modifier = Modifier
-                .weight(1f)
-                .fillMaxWidth()
-        )
-        Spacer(Modifier.width(16.dp))
-
         Button(
             onClick = {
-                onAction(CartAction.OnCheckout)
+                onAction(SummaryAction.Close)
             },
             modifier = Modifier
-                .wrapContentSize(),
-            //.padding(horizontal = 16.dp, vertical = 8.dp),
+                .fillMaxWidth(),
             colors = ButtonDefaults.buttonColors(
                 containerColor = Green
             ),
             shape = RoundedCornerShape(8.dp)
         ) {
             Text(
-                text = "Checkout"+if(state.cart?.products?.isNotEmpty() == true) " (${state.cart.products.size})" else "",
+                text = "Close",
                 color = White,
                 fontSize = 14.sp,
                 fontWeight = FontWeight.Bold

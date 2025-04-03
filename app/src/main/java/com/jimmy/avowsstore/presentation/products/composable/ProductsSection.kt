@@ -2,6 +2,7 @@ package com.jimmy.avowsstore.presentation.products.composable
 
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
@@ -31,6 +32,7 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import coil.compose.AsyncImage
+import com.jimmy.avowsstore.core.util.shimmerEffect
 import com.jimmy.avowsstore.core.util.toFormattedCurrency
 import com.jimmy.avowsstore.core.util.toSimpleReadableCount
 import com.jimmy.avowsstore.domain.model.Product
@@ -56,14 +58,20 @@ fun ProductsSection(
         verticalArrangement = Arrangement.spacedBy(16.dp),
         horizontalArrangement = Arrangement.spacedBy(16.dp)
     ) {
-        items(state.products) {
-            ProductItem(
-                product = it,
-                onClick = {
-                    onAction(ProductsAction.ProductClicked(it))
-                }
-            )
+        if(state.isLoadingProducts) {
+            items(6) {
+                ProductLoadingItem()
+            }
+        } else {
+            items(state.products) {
+                ProductItem(
+                    product = it,
+                    onClick = {
+                        onAction(ProductsAction.ProductClicked(it))
+                    }
+                )
 
+            }
         }
     }
 }
@@ -76,6 +84,7 @@ fun ProductItem(
     Column(
         modifier = modifier
             .fillMaxWidth()
+            .clip(RoundedCornerShape(8.dp))
             .clickable {
                 onClick()
             }
@@ -132,6 +141,62 @@ fun ProductItem(
                 fontSize = 12.sp
             )
         }
+        Spacer(Modifier.width(8.dp))
+    }
+
+}
+
+@Composable
+fun ProductLoadingItem(
+    modifier: Modifier = Modifier) {
+    Column(
+        modifier = modifier
+            .fillMaxWidth()
+            .clip(RoundedCornerShape(8.dp))
+    ) {
+        Box(
+            modifier = Modifier
+                .fillMaxWidth()
+                .clip(RoundedCornerShape(8.dp))
+                .aspectRatio(1f)
+                .shimmerEffect()
+        )
+        Spacer(Modifier.height(8.dp))
+        Box(
+            modifier = modifier
+                .fillMaxWidth(0.7f)
+                .height(24.dp)
+                .clip(RoundedCornerShape(4.dp))
+                .shimmerEffect()
+
+        )
+        Spacer(Modifier.height(2.dp))
+        Box(
+            modifier = modifier
+                .fillMaxWidth(0.3f)
+                .height(24.dp)
+                .clip(RoundedCornerShape(4.dp))
+                .shimmerEffect()
+
+        )
+        Spacer(Modifier.height(8.dp))
+        Box(
+            modifier = modifier
+                .width(80.dp)
+                .height(24.dp)
+                .clip(RoundedCornerShape(4.dp))
+                .shimmerEffect()
+
+        )
+        Spacer(Modifier.height(8.dp))
+        Box(
+            modifier = modifier
+                .width(120.dp)
+                .height(24.dp)
+                .clip(RoundedCornerShape(4.dp))
+                .shimmerEffect()
+
+        )
         Spacer(Modifier.width(8.dp))
     }
 

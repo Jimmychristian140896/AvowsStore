@@ -1,10 +1,14 @@
 package com.jimmy.avowsstore.di
 
 import com.jimmy.avowsstore.data.repository.AuthRepositoryImpl
+import com.jimmy.avowsstore.data.repository.CartRepositoryImpl
 import com.jimmy.avowsstore.data.repository.ProductRepositoryImpl
+import com.jimmy.avowsstore.data.repository.TransactionRepositoryImpl
 import com.jimmy.avowsstore.data.repository.UserRepositoryImpl
 import com.jimmy.avowsstore.domain.repository.AuthRepository
+import com.jimmy.avowsstore.domain.repository.CartRepository
 import com.jimmy.avowsstore.domain.repository.ProductRepository
+import com.jimmy.avowsstore.domain.repository.TransactionRepository
 import com.jimmy.avowsstore.domain.repository.UserRepository
 import org.koin.core.module.dsl.bind
 import org.koin.core.module.dsl.singleOf
@@ -14,4 +18,6 @@ val repositoryModule = module {
     singleOf(::UserRepositoryImpl) { bind<UserRepository>() }
     singleOf(::AuthRepositoryImpl) { bind<AuthRepository>() }
     singleOf(::ProductRepositoryImpl) { bind<ProductRepository>() }
+    singleOf(::CartRepositoryImpl) { bind<CartRepository>() }
+    singleOf(::TransactionRepositoryImpl) { bind<TransactionRepository>() }
 }

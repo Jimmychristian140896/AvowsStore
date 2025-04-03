@@ -1,11 +1,10 @@
-package com.jimmy.avowsstore.presentation.cart.composable
+package com.jimmy.avowsstore.presentation.summary.composable
 
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
-import androidx.compose.material.icons.filled.ShoppingCart
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.Text
@@ -16,15 +15,15 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.jimmy.avowsstore.presentation.cart.CartAction
 import com.jimmy.avowsstore.presentation.cart.CartState
-import com.jimmy.avowsstore.presentation.productdetail.ProductDetailAction
-import com.jimmy.avowsstore.presentation.productdetail.ProductDetailState
+import com.jimmy.avowsstore.presentation.summary.SummaryAction
+import com.jimmy.avowsstore.presentation.summary.SummaryState
 import com.jimmy.avowsstore.ui.theme.Black
 
 
 @Composable
 fun HeaderSection(
-    state: CartState,
-    onAction: (CartAction) -> Unit,
+    state: SummaryState,
+    onAction: (SummaryAction) -> Unit,
     modifier: Modifier = Modifier
 ) {
     Row (
@@ -36,7 +35,7 @@ fun HeaderSection(
 
         IconButton(
             onClick = {
-                onAction(CartAction.NavigateBack)
+                onAction(SummaryAction.Close)
             }
         ) {
             Icon(
@@ -45,7 +44,7 @@ fun HeaderSection(
             )
         }
         Text(
-            text = "Cart",
+            text = "Summary",
             fontSize = 16.sp,
             color = Black,
             modifier = Modifier

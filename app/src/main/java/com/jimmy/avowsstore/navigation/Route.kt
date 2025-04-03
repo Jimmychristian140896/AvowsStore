@@ -16,7 +16,7 @@ sealed class Route {
     @Serializable
     data object Cart: Route()
     @Serializable
-    data object Summary: Route()
+    data class Summary(val id: String): Route()
     @Serializable
     data object Profile: Route()
 }

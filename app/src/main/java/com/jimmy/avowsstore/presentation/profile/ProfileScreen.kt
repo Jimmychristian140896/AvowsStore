@@ -93,7 +93,7 @@ fun ProfileScreen(
 
             HorizontalDivider(
                 color = LightDivider,
-                thickness = 16.dp,
+                thickness = 1.dp,
                 modifier = Modifier
                     .fillMaxWidth()
             )
@@ -103,7 +103,7 @@ fun ProfileScreen(
             )
             HorizontalDivider(
                 color = LightDivider,
-                thickness = 16.dp,
+                thickness = 1.dp,
                 modifier = Modifier
                     .fillMaxWidth()
             )

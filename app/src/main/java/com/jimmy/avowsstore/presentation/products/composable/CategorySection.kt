@@ -7,7 +7,9 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -18,6 +20,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.unit.dp
 import com.jimmy.avowsstore.core.util.capitalizeWords
+import com.jimmy.avowsstore.core.util.shimmerEffect
 import com.jimmy.avowsstore.domain.model.ProductCategory
 import com.jimmy.avowsstore.presentation.products.ProductsAction
 import com.jimmy.avowsstore.presentation.products.ProductsState
@@ -44,14 +47,20 @@ fun CategorySection(
         verticalAlignment = Alignment.CenterVertically,
         horizontalArrangement = Arrangement.spacedBy(16.dp)
     ) {
-        items(state.categories) {
-            CategoryItem(
-                category = it,
-                isSelected = it == state.selectedCategory,
-                onClick = {
-                    onAction(ProductsAction.SetSelectedCategory(it))
-                }
-            )
+        if(state.isLoadingCategories) {
+            items(6) {
+                CategoryLoadingItem()
+            }
+        } else {
+            items(state.categories) {
+                CategoryItem(
+                    category = it,
+                    isSelected = it == state.selectedCategory,
+                    onClick = {
+                        onAction(ProductsAction.SetSelectedCategory(it))
+                    }
+                )
+            }
         }
     }
 }
@@ -65,8 +74,8 @@ fun CategoryItem(
     Box(
         modifier = modifier
             .clip(RoundedCornerShape(50))
-            .background(if(isSelected) GreenBackground else GrayBackground)
-            .border(1.dp, if(isSelected) GreenBorder else Transparent, RoundedCornerShape(50))
+            .background(if (isSelected) GreenBackground else GrayBackground)
+            .border(1.dp, if (isSelected) GreenBorder else Transparent, RoundedCornerShape(50))
             .clickable {
                 onClick()
             }
@@ -78,4 +87,19 @@ fun CategoryItem(
             modifier = Modifier
         )
     }
+}
+
+
+@Composable
+fun CategoryLoadingItem(
+    modifier: Modifier = Modifier
+) {
+    Box(
+        modifier = modifier
+            .width(80.dp)
+            .height(40.dp)
+            .clip(RoundedCornerShape(50))
+            .shimmerEffect()
+
+    )
 }

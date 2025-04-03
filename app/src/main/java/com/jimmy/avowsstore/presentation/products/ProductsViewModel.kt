@@ -7,6 +7,7 @@ import com.jimmy.avowsstore.core.data.onFailure
 import com.jimmy.avowsstore.core.data.onSuccess
 import com.jimmy.avowsstore.domain.model.ProductCategory
 import com.jimmy.avowsstore.domain.model.ProductCategoryAll
+import com.jimmy.avowsstore.domain.repository.CartRepository
 import com.jimmy.avowsstore.domain.repository.ProductRepository
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -18,7 +19,8 @@ import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
 class ProductsViewModel(
-    private val productRepository: ProductRepository
+    private val productRepository: ProductRepository,
+    private val cartRepository: CartRepository
 
 ) : ViewModel() {
 
@@ -32,6 +34,7 @@ class ProductsViewModel(
                 hasLoadedInitialData = true
                 getCategories()
                 getProducts()
+                getCartCount()
             }
         }
         .stateIn(
@@ -71,6 +74,12 @@ class ProductsViewModel(
                 _state.update { it.copy(
                     showProfileDialog = false
                 ) }
+            }
+
+            ProductsAction.CartClicked -> {
+                viewModelScope.launch {
+                    _eventChannel.send(ProductsEvent.CartClicked)
+                }
             }
             else -> TODO("Handle actions")
         }
@@ -122,6 +131,29 @@ class ProductsViewModel(
                     errorProducts = error.asUiText()
                 ) }
             }
+
+
+        }
+
+    }
+    private fun getCartCount(){
+        viewModelScope.launch {
+            _state.update { it.copy(
+                isLoadingCartCount = true
+            ) }
+            cartRepository.getCartCount()
+                .onSuccess { cartCount ->
+                    _state.update { it.copy(
+                        isLoadingCartCount = false,
+                        cartCount = cartCount
+                    ) }
+                }.onFailure {
+                    error ->
+                    _state.update { it.copy(
+                        isLoadingCartCount = false,
+                        errorCartCount = error.asUiText()
+                    ) }
+                }
 
 
         }
