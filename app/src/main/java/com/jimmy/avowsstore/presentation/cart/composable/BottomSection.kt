@@ -12,6 +12,7 @@ import androidx.compose.foundation.layout.wrapContentWidth
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.Checkbox
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -40,6 +41,7 @@ fun BottomSection(
     modifier: Modifier = Modifier
 ) {
 
+    val allChecked = state.cart?.products?.all { it.isChecked } ?: false
     Row(
         modifier = modifier
             .fillMaxWidth()
@@ -47,8 +49,25 @@ fun BottomSection(
         verticalAlignment = Alignment.CenterVertically
     ) {
 
+        Checkbox(
+            checked = allChecked,
+            onCheckedChange = {
+                if(!allChecked) {
+                    onAction(CartAction.OnCheckAll)
+                } else {
+                    onAction(CartAction.OnUncheckAll)
+                }
+            }
+        )
+
         Text(
-            text = state.cart?.products?.sumOf { it.price*it.quantity }?.toFormattedCurrency() ?: "",
+            text = if(!allChecked) "All" else "",
+            color = Black,
+            fontSize = 12.sp,
+            modifier = Modifier
+        )
+        Text(
+            text = state.cart?.products?.filter { it.isChecked }?.sumOf { it.price*it.quantity }?.toFormattedCurrency() ?: "",
             color = Black,
             fontSize = 18.sp,
             fontWeight = FontWeight.Bold,
@@ -83,7 +102,7 @@ fun BottomSection(
             } else {
                 Text(
                     text = stringResource(R.string.checkout)
-                            +if(state.cart?.products?.isNotEmpty() == true) " (${state.cart.products.size})" else "",
+                            +if(state.cart?.products?.filter { it.isChecked }?.isNotEmpty() == true) " (${state.cart.products.filter { it.isChecked }.size})" else "",
                     color = White,
                     fontSize = 14.sp,
                     fontWeight = FontWeight.Bold

@@ -48,10 +48,14 @@ class ProductsViewModel(
     fun onAction(action: ProductsAction) {
         when (action) {
             is ProductsAction.SetSelectedCategory -> {
-                _state.update { it.copy(
-                    selectedCategory = action.category
-                ) }
-                getProducts()
+                viewModelScope.launch {
+                    _state.update {
+                        it.copy(
+                            selectedCategory = action.category
+                        )
+                    }
+                    getProducts()
+                }
             }
 
             is ProductsAction.ProductClicked -> {
@@ -70,9 +74,13 @@ class ProductsViewModel(
             }
 
             ProductsAction.DismissProfileDialog -> {
-                _state.update { it.copy(
-                    showProfileDialog = false
-                ) }
+                viewModelScope.launch {
+                    _state.update {
+                        it.copy(
+                            showProfileDialog = false
+                        )
+                    }
+                }
             }
 
             ProductsAction.CartClicked -> {
@@ -101,6 +109,20 @@ class ProductsViewModel(
                 getCategories()
                 getProducts()
                 getCartCount()
+            }
+
+            ProductsAction.OnPullToRefresh -> {
+                viewModelScope.launch {
+                    _state.update { it.copy(
+                        isPullToRefresh = true
+                    ) }
+                    getProducts()
+
+                    /*_state.update { it.copy(
+                        isPullToRefresh = false
+                    ) }*/
+
+                }
             }
             else -> TODO("Handle actions")
         }
@@ -143,12 +165,14 @@ class ProductsViewModel(
             }.onSuccess { products ->
                 _state.update { it.copy(
                     isLoadingProducts = false,
+                    isPullToRefresh = false,
                     products = products
                 ) }
             }.onFailure {
                 error ->
                 _state.update { it.copy(
                     isLoadingProducts = false,
+                    isPullToRefresh = false,
                     errorProducts = error.asUiText()
                 ) }
             }

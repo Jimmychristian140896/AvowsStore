@@ -5,4 +5,5 @@ sealed interface ProductDetailAction {
     data object OnAddToCart: ProductDetailAction
     data object CartClicked: ProductDetailAction
     data object OnTryAgain: ProductDetailAction
+    data object OnPullToRefresh: ProductDetailAction
 }

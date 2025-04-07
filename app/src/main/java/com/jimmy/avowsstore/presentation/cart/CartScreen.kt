@@ -1,5 +1,8 @@
 package com.jimmy.avowsstore.presentation.cart
 
+import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.expandVertically
+import androidx.compose.animation.shrinkVertically
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
@@ -22,6 +25,7 @@ import com.jimmy.avowsstore.presentation.cart.composable.CartLoadingSection
 import com.jimmy.avowsstore.presentation.cart.composable.CartSection
 import com.jimmy.avowsstore.presentation.cart.composable.EmptySection
 import com.jimmy.avowsstore.presentation.cart.composable.HeaderSection
+import com.jimmy.avowsstore.presentation.cart.composable.SelectedCountSection
 import com.jimmy.avowsstore.ui.theme.LightDivider
 import org.koin.androidx.compose.koinViewModel
 
@@ -105,6 +109,32 @@ fun CartScreen(
                 onAction = onAction
             )
         } else {
+            val countChecked = state.cart?.products?.count { it.isChecked } ?: 0
+            AnimatedVisibility(
+                visible = countChecked> 0,
+            ) {
+                Column {
+                    SelectedCountSection(
+                        countChecked = countChecked,
+                        state = state,
+                        onAction = onAction,
+                        /*
+                modifier = Modifier
+                    .animateItem(
+                        fadeInSpec = tween(300),
+                        fadeOutSpec = tween(300)
+                    )*/
+                    )
+                    HorizontalDivider(
+                        color = LightDivider,
+                        thickness = 1.dp,
+                        modifier = Modifier
+                            .fillMaxWidth()
+                    )
+                }
+            }
+
+
             CartSection(
                 state = state,
                 onAction = onAction,

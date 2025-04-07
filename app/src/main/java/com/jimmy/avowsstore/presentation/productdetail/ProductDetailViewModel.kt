@@ -91,11 +91,24 @@ class ProductDetailViewModel(
             }
 
             ProductDetailAction.OnTryAgain -> {
-                _state.update { it.copy(
-                    error = null,
-                ) }
-                getCartCount()
-                getProductById(id)
+                viewModelScope.launch {
+                    _state.update {
+                        it.copy(
+                            error = null,
+                        )
+                    }
+                    getCartCount()
+                    getProductById(id)
+                }
+            }
+
+            ProductDetailAction.OnPullToRefresh -> {
+                viewModelScope.launch {
+                    _state.update { it.copy(
+                        isPullToRefresh = true
+                    ) }
+                    getProductById(id)
+                }
             }
             else -> TODO("Handle actions")
         }
@@ -110,12 +123,14 @@ class ProductDetailViewModel(
                 .onSuccess { product ->
                     _state.update { it.copy(
                         isLoading = false,
+                        isPullToRefresh = false,
                         product = product
                     ) }
                 }
                 .onFailure { error ->
                     _state.update { it.copy(
                         isLoading = false,
+                        isPullToRefresh = false,
                         error = error.asUiText()
                     ) }
                 }
