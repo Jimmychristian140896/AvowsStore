@@ -14,10 +14,13 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
+import com.jimmy.avowsstore.core.composable.GeneralErrorSection
 import com.jimmy.avowsstore.core.composable.ObserveAsEvents
 import com.jimmy.avowsstore.navigation.Route
 import com.jimmy.avowsstore.presentation.cart.composable.BottomSection
+import com.jimmy.avowsstore.presentation.cart.composable.CartLoadingSection
 import com.jimmy.avowsstore.presentation.cart.composable.CartSection
+import com.jimmy.avowsstore.presentation.cart.composable.EmptySection
 import com.jimmy.avowsstore.presentation.cart.composable.HeaderSection
 import com.jimmy.avowsstore.ui.theme.LightDivider
 import org.koin.androidx.compose.koinViewModel
@@ -37,6 +40,10 @@ fun CartScreenRoot(
 
             CartEvent.NavigateBack -> {
                 navHostController.navigateUp()
+            }
+
+            CartEvent.OnStartShoppingClicked -> {
+                navHostController.navigate(Route.Products)
             }
             else -> {
             }
@@ -79,22 +86,42 @@ fun CartScreen(
             modifier = Modifier
                 .fillMaxWidth()
         )
-        CartSection(
-            state = state,
-            onAction = onAction,
-            modifier = Modifier
-                .weight(1f)
-        )
+        if(state.isLoading) {
+            CartLoadingSection(
+                modifier = Modifier
+                    .weight(1f)
+            )
+        } else if(state.error != null) {
+            GeneralErrorSection(
+                onTryAgain = {
+                    onAction(CartAction.OnTryAgain)
+                },
+                message = state.error.asString()
+            )
+        }
+        else if(state.cart != null && state.cart.products.isEmpty()) {
+            EmptySection(
+                state = state,
+                onAction = onAction
+            )
+        } else {
+            CartSection(
+                state = state,
+                onAction = onAction,
+                modifier = Modifier
+                    .weight(1f)
+            )
 
-        HorizontalDivider(
-            color = LightDivider,
-            thickness = 1.dp,
-            modifier = Modifier
-                .fillMaxWidth()
-        )
-        BottomSection(
-            state = state,
-            onAction = onAction
-        )
+            HorizontalDivider(
+                color = LightDivider,
+                thickness = 1.dp,
+                modifier = Modifier
+                    .fillMaxWidth()
+            )
+            BottomSection(
+                state = state,
+                onAction = onAction
+            )
+        }
     }
 }

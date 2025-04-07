@@ -5,5 +5,3 @@ data class ProductCategory(
     val name: String
 
 )
-
-val ProductCategoryAll = ProductCategory(id = "", name = "all")

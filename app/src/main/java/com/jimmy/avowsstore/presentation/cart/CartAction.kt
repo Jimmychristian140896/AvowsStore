@@ -11,4 +11,6 @@ sealed interface CartAction {
     data class OnProductQuantityMinus(val cartProduct: CartProduct) : CartAction
     data class OnProductDelete(val cartProduct: CartProduct) : CartAction
     data object OnCheckout : CartAction
+    data object OnStartShoppingClicked : CartAction
+    data object OnTryAgain : CartAction
 }

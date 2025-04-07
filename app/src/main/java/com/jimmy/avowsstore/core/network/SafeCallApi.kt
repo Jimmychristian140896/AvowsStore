@@ -8,12 +8,15 @@ import java.io.IOException
 import java.net.SocketTimeoutException
 import io.ktor.client.call.body
 import io.ktor.client.statement.HttpResponse
+import io.ktor.util.network.UnresolvedAddressException
 
 
-suspend inline fun <reified T> safeCall(execute: () -> HttpResponse): com.jimmy.avowsstore.core.data.Result<T, DataError.HttpError> {
+suspend inline fun <reified T> safeCall(execute: () -> HttpResponse): Result<T, DataError.HttpError> {
     val response = try {
         execute()
     } catch (e: IOException) {
+        return Result.Error(DataError.HttpError.NO_INTERNET)
+    }catch (e: UnresolvedAddressException) {
         return Result.Error(DataError.HttpError.NO_INTERNET)
     }catch (e: SocketTimeoutException){
         return Result.Error(DataError.HttpError.CONNECTION_TIMEOUT)

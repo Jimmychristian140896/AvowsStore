@@ -7,7 +7,6 @@ import androidx.navigation.toRoute
 import com.jimmy.avowsstore.core.data.asUiText
 import com.jimmy.avowsstore.core.data.onFailure
 import com.jimmy.avowsstore.core.data.onSuccess
-import com.jimmy.avowsstore.domain.model.ProductCategoryAll
 import com.jimmy.avowsstore.domain.repository.CartRepository
 import com.jimmy.avowsstore.domain.repository.ProductRepository
 import com.jimmy.avowsstore.navigation.Route
@@ -89,6 +88,14 @@ class ProductDetailViewModel(
                 viewModelScope.launch {
                     _eventChannel.send(ProductDetailEvent.CartClicked)
                 }
+            }
+
+            ProductDetailAction.OnTryAgain -> {
+                _state.update { it.copy(
+                    error = null,
+                ) }
+                getCartCount()
+                getProductById(id)
             }
             else -> TODO("Handle actions")
         }

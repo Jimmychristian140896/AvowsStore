@@ -6,6 +6,7 @@ import com.jimmy.avowsstore.core.data.asUiText
 import com.jimmy.avowsstore.core.data.onFailure
 import com.jimmy.avowsstore.core.data.onSuccess
 import com.jimmy.avowsstore.domain.repository.CartRepository
+import com.jimmy.avowsstore.domain.repository.TransactionRepository
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
@@ -16,7 +17,8 @@ import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
 class CartViewModel(
-    private val cartRepository: CartRepository
+    private val cartRepository: CartRepository,
+    private val transactionRepository: TransactionRepository
 ) : ViewModel() {
 
     private var hasLoadedInitialData = false
@@ -125,7 +127,30 @@ class CartViewModel(
 
             CartAction.OnCheckout -> {
                 viewModelScope.launch {
-                    _eventChannel.send(CartEvent.OnCheckout("1"))
+                    _state.update {
+                        it.copy(
+                            isLoadingCheckout = true
+                        )
+                    }
+                    _state.value.cart?.let {
+                        transactionRepository.saveTransaction(it)
+                            .onSuccess {
+                                _state.update {
+                                    it.copy(
+                                        isLoadingCheckout = false
+                                    )
+                                }
+                                _eventChannel.send(CartEvent.OnCheckout(it))
+                            }
+                            .onFailure {
+                                _state.update {
+                                    it.copy(
+                                        isLoadingCheckout = false,
+                                        error = it.error
+                                    )
+                                }
+                            }
+                    }
                 }
             }
 
@@ -133,6 +158,21 @@ class CartViewModel(
                 viewModelScope.launch {
                     _eventChannel.send(CartEvent.NavigateBack)
                 }
+            }
+
+            CartAction.OnStartShoppingClicked -> {
+                viewModelScope.launch {
+                    _eventChannel.send(CartEvent.OnStartShoppingClicked)
+                }
+            }
+
+            CartAction.OnTryAgain -> {
+                _state.update {
+                    it.copy(
+                        error = null
+                    )
+                }
+                getCart()
             }
             else -> TODO("Handle actions")
         }

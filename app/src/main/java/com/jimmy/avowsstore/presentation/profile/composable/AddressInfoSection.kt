@@ -10,9 +10,11 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.jimmy.avowsstore.R
 import com.jimmy.avowsstore.core.util.capitalizeWords
 import com.jimmy.avowsstore.presentation.profile.ProfileAction
 import com.jimmy.avowsstore.presentation.profile.ProfileState
@@ -33,7 +35,7 @@ fun AddressInfoSection(
                 .padding(16.dp)
         ) {
             Text(
-                text = "Address Info",
+                text = stringResource(R.string.address_info),
                 fontSize = 16.sp,
                 color = Black,
                 fontWeight = FontWeight.Bold,
@@ -48,7 +50,7 @@ fun AddressInfoSection(
                 verticalAlignment = Alignment.CenterVertically
             ) {
                 Text(
-                    text = "City",
+                    text = stringResource(R.string.city),
                     modifier = Modifier
                         .weight(1f)
                         .fillMaxWidth(),
@@ -74,7 +76,7 @@ fun AddressInfoSection(
                 verticalAlignment = Alignment.CenterVertically
             ) {
                 Text(
-                    text = "Street",
+                    text = stringResource(R.string.street),
                     modifier = Modifier
                         .weight(1f)
                         .fillMaxWidth(),
@@ -100,7 +102,7 @@ fun AddressInfoSection(
                 verticalAlignment = Alignment.CenterVertically
             ) {
                 Text(
-                    text = "Number",
+                    text = stringResource(R.string.number),
                     modifier = Modifier
                         .weight(1f)
                         .fillMaxWidth(),
@@ -126,7 +128,7 @@ fun AddressInfoSection(
                 verticalAlignment = Alignment.CenterVertically
             ) {
                 Text(
-                    text = "ZIP Code",
+                    text = stringResource(R.string.zip_code),
                     modifier = Modifier
                         .weight(1f)
                         .fillMaxWidth(),

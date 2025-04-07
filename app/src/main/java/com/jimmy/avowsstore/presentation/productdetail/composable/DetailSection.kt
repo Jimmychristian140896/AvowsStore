@@ -22,11 +22,14 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import coil.compose.AsyncImage
+import com.jimmy.avowsstore.R
 import com.jimmy.avowsstore.core.util.capitalizeWords
 import com.jimmy.avowsstore.core.util.toFormattedCurrency
 import com.jimmy.avowsstore.core.util.toSimpleReadableCount
@@ -58,10 +61,10 @@ fun DetailSection(
             AsyncImage(
                 model = product.imageUrl,
                 contentDescription = product.name,
+                placeholder = painterResource(R.drawable.ic_image_placeholder),
                 //contentScale = ContentScale.FillBounds,
                 modifier = Modifier
                     .fillMaxWidth()
-                    .clip(RoundedCornerShape(8.dp))
                     .aspectRatio(1f)
             )
             Column(
@@ -96,7 +99,7 @@ fun DetailSection(
                 ) {
                     Icon(
                         imageVector = Icons.Default.Star,
-                        contentDescription = "Rating",
+                        contentDescription = stringResource(R.string.rating),
                         tint = Yellow,
                         modifier = Modifier.size(16.dp)
                     )
@@ -123,7 +126,7 @@ fun DetailSection(
                     .padding(16.dp)
             ) {
                 Text(
-                    text = "Product Detail",
+                    text = stringResource(R.string.product_detail),
                     fontSize = 16.sp,
                     color = Black,
                     fontWeight = FontWeight.Bold,
@@ -138,7 +141,7 @@ fun DetailSection(
                     verticalAlignment = Alignment.CenterVertically
                 ) {
                     Text(
-                        text = "Category",
+                        text = stringResource(R.string.category),
                         modifier = Modifier
                             .weight(1f)
                             .fillMaxWidth(),
@@ -165,7 +168,7 @@ fun DetailSection(
                 )
                 Spacer(Modifier.height(16.dp))
                 Text(
-                    text = "Product Description",
+                    text = stringResource(R.string.product_description),
                     fontSize = 16.sp,
                     color = Black,
                     fontWeight = FontWeight.Bold,

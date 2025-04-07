@@ -1,13 +1,26 @@
 package com.jimmy.avowsstore.domain.mappers
 
-import com.jimmy.avowsstore.data.local.entity.UserEntity
+import com.jimmy.avowsstore.data.local.entity.TransactionProductEntity
+import com.jimmy.avowsstore.data.local.joinentity.TransactionWithProduct
+import com.jimmy.avowsstore.domain.model.Transaction
+import com.jimmy.avowsstore.domain.model.TransactionProduct
 import com.jimmy.avowsstore.domain.model.User
-/*
-fun UserEntity.toUser() = User(
-    username = username,
-    password = password
+
+fun TransactionProductEntity.toTransactionProduct() = TransactionProduct(
+    id = id,
+    quantity = quantity,
+    name = name,
+    price = price,
+    imageUrl = imageUrl,
 )
-fun User.toUserEntity() = UserEntity(
-    username = username,
-    password = password
-)*/
+
+
+fun TransactionWithProduct.toTransaction(): Transaction {
+    val transaction = Transaction(
+        id = transaction.id,
+        date = transaction.date,
+        products = products.map { it.toTransactionProduct() }
+
+    )
+    return transaction
+}

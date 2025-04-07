@@ -14,10 +14,13 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
+import com.jimmy.avowsstore.core.composable.GeneralErrorSection
 import com.jimmy.avowsstore.core.composable.ObserveAsEvents
 import com.jimmy.avowsstore.navigation.Route
+import com.jimmy.avowsstore.presentation.cart.CartAction
 import com.jimmy.avowsstore.presentation.summary.composable.BottomSection
 import com.jimmy.avowsstore.presentation.summary.composable.HeaderSection
+import com.jimmy.avowsstore.presentation.summary.composable.SummaryLoadingSection
 import com.jimmy.avowsstore.presentation.summary.composable.SummarySection
 import com.jimmy.avowsstore.ui.theme.LightDivider
 import org.koin.androidx.compose.koinViewModel
@@ -80,22 +83,36 @@ fun SummaryScreen(
             modifier = Modifier
                 .fillMaxWidth()
         )
-        SummarySection(
-            state = state,
-            onAction = onAction,
-            modifier = Modifier
-                .weight(1f)
-        )
+        if(state.isLoading) {
+            SummaryLoadingSection(
+                modifier = Modifier
+                    .weight(1f)
+            )
+        } else if(state.error != null) {
+            GeneralErrorSection(
+                onTryAgain = {
+                    onAction(SummaryAction.OnTryAgain)
+                },
+                message = state.error.asString()
+            )
+        } else {
+            SummarySection(
+                state = state,
+                onAction = onAction,
+                modifier = Modifier
+                    .weight(1f)
+            )
 
-        HorizontalDivider(
-            color = LightDivider,
-            thickness = 1.dp,
-            modifier = Modifier
-                .fillMaxWidth()
-        )
-        BottomSection(
-            state = state,
-            onAction = onAction
-        )
+            HorizontalDivider(
+                color = LightDivider,
+                thickness = 1.dp,
+                modifier = Modifier
+                    .fillMaxWidth()
+            )
+            BottomSection(
+                state = state,
+                onAction = onAction
+            )
+        }
     }
 }

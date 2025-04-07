@@ -6,6 +6,8 @@ import com.jimmy.avowsstore.domain.model.Cart
 data class CartState(
     val isLoading: Boolean = false,
     val cart: Cart? = null,
-    val error: UiText? = null
+    val error: UiText? = null,
+    val isLoadingCheckout: Boolean = false,
+    val errorCheckout: UiText? = null
 
 )

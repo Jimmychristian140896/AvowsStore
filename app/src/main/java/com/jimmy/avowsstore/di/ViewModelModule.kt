@@ -1,5 +1,6 @@
 package com.jimmy.avowsstore.di
 
+import com.jimmy.avowsstore.MainViewModel
 import com.jimmy.avowsstore.presentation.cart.CartViewModel
 import com.jimmy.avowsstore.presentation.login.LoginViewModel
 import com.jimmy.avowsstore.presentation.productdetail.ProductDetailViewModel
@@ -10,6 +11,7 @@ import org.koin.androidx.viewmodel.dsl.viewModelOf
 import org.koin.dsl.module
 
 val viewModelModule = module {
+    viewModelOf(::MainViewModel)
     viewModelOf(::LoginViewModel)
     viewModelOf(::ProductsViewModel)
     viewModelOf(::ProductDetailViewModel)

@@ -4,10 +4,11 @@ import androidx.room.Entity
 import androidx.room.PrimaryKey
 
 @Entity(
-    tableName = "users"
+    tableName = "transactions"
 )
-data class UserEntity(
+data class TransactionEntity(
     @PrimaryKey(autoGenerate = false)
-    val username: String,
-    val password: String
+    val id: String,
+    val date: String,
+
 )

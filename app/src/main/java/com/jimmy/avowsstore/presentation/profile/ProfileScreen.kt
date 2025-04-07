@@ -11,7 +11,9 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.ModalBottomSheet
+import androidx.compose.material3.SheetValue
 import androidx.compose.material3.Text
+import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
@@ -23,11 +25,17 @@ import androidx.compose.ui.unit.sp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
+import com.jimmy.avowsstore.core.composable.GeneralErrorSection
 import com.jimmy.avowsstore.core.composable.ObserveAsEvents
 import com.jimmy.avowsstore.core.util.capitalizeWords
+import com.jimmy.avowsstore.presentation.products.ProductsScreen
 import com.jimmy.avowsstore.presentation.profile.composable.AddressInfoSection
+import com.jimmy.avowsstore.presentation.profile.composable.BottomSection
+import com.jimmy.avowsstore.presentation.profile.composable.LoadingSection
 import com.jimmy.avowsstore.presentation.profile.composable.PersonalInfoSection
 import com.jimmy.avowsstore.presentation.profile.composable.ProfileInfoSection
+import com.jimmy.avowsstore.presentation.summary.SummaryAction
+import com.jimmy.avowsstore.presentation.summary.composable.SummaryLoadingSection
 import com.jimmy.avowsstore.ui.theme.Black
 import com.jimmy.avowsstore.ui.theme.Green
 import com.jimmy.avowsstore.ui.theme.LightDivider
@@ -36,6 +44,7 @@ import org.koin.androidx.compose.koinViewModel
 @Composable
 fun ProfileScreenBottomSheet(
     onDismiss: () -> Unit,
+    onLogout: () -> Unit,
     modifier: Modifier = Modifier
 ) {
 
@@ -45,20 +54,42 @@ fun ProfileScreenBottomSheet(
 
     ObserveAsEvents(viewModel.eventChannel) { event ->
         when (event) {
+            ProfileEvent.Logout -> {
+                onLogout()
+            }
             else -> {
             }
         }
     }
+
+    val sheetState = rememberModalBottomSheetState(
+        skipPartiallyExpanded = true, // Skip the middle
+
+    )
     ModalBottomSheet(
         onDismissRequest = {
             onDismiss()
         },
         modifier = modifier,
+        sheetState = sheetState
     ) {
-        ProfileScreen(
-            state = state,
-            onAction = viewModel::onAction
-        )
+
+        if(state.isLoading) {
+            LoadingSection(
+            )
+        } else if(state.error != null) {
+            GeneralErrorSection(
+                onTryAgain = {
+                    viewModel.onAction(ProfileAction.OnTryAgain)
+                },
+                message = state.error?.asString()
+            )
+        } else {
+            ProfileScreen(
+                state = state,
+                onAction = viewModel::onAction
+            )
+        }
     }
 }
 
@@ -108,6 +139,10 @@ fun ProfileScreen(
                     .fillMaxWidth()
             )
             AddressInfoSection (
+                state = state,
+                onAction = onAction
+            )
+            BottomSection(
                 state = state,
                 onAction = onAction
             )

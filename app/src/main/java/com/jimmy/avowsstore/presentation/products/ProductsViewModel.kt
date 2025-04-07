@@ -6,7 +6,6 @@ import com.jimmy.avowsstore.core.data.asUiText
 import com.jimmy.avowsstore.core.data.onFailure
 import com.jimmy.avowsstore.core.data.onSuccess
 import com.jimmy.avowsstore.domain.model.ProductCategory
-import com.jimmy.avowsstore.domain.model.ProductCategoryAll
 import com.jimmy.avowsstore.domain.repository.CartRepository
 import com.jimmy.avowsstore.domain.repository.ProductRepository
 import kotlinx.coroutines.channels.Channel
@@ -81,6 +80,28 @@ class ProductsViewModel(
                     _eventChannel.send(ProductsEvent.CartClicked)
                 }
             }
+
+            ProductsAction.Logout -> {
+                viewModelScope.launch {
+                    _eventChannel.send(ProductsEvent.Logout)
+                }
+            }
+
+            ProductsAction.GetCategories -> {
+                getCategories()
+            }
+            ProductsAction.GetProducts -> {
+                getProducts()
+            }
+            ProductsAction.OnTryAgain -> {
+                _state.update { it.copy(
+                    errorCategories = null,
+                    errorProducts = null
+                ) }
+                getCategories()
+                getProducts()
+                getCartCount()
+            }
             else -> TODO("Handle actions")
         }
     }
@@ -92,7 +113,7 @@ class ProductsViewModel(
             ) }
             productRepository.getCategories()
                 .onSuccess { categories ->
-                    val allCategory = ProductCategoryAll
+                    val allCategory = ProductCategory(id = "", name = "all")
                     _state.update { it.copy(
                         isLoadingCategories = false,
                         categories = categories.toMutableList().apply {
@@ -115,7 +136,7 @@ class ProductsViewModel(
             _state.update { it.copy(
                 isLoadingProducts = true
             ) }
-            if(_state.value.selectedCategory == null || _state.value.selectedCategory == ProductCategoryAll) {
+            if(_state.value.selectedCategory == null || _state.value.selectedCategory?.id.isNullOrEmpty()) {
                 productRepository.getAllProducts()
             } else {
                 productRepository.getProductsByCategory(_state.value.selectedCategory!!.id)

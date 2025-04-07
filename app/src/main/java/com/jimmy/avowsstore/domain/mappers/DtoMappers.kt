@@ -1,5 +1,6 @@
 package com.jimmy.avowsstore.domain.mappers
 
+import com.jimmy.avowsstore.data.local.entity.TransactionProductEntity
 import com.jimmy.avowsstore.data.remote.dto.CartDto
 import com.jimmy.avowsstore.data.remote.dto.LoginDto
 import com.jimmy.avowsstore.data.remote.dto.ProductDto
@@ -94,3 +95,14 @@ fun CartDto.toTransaction(
         products = productCarts
     )
 }
+
+fun CartProduct.toTransactionProductEntity(
+    transactionId: String
+) = TransactionProductEntity(
+    id = id,
+    quantity = quantity,
+    name = name,
+    price = price,
+    imageUrl = imageUrl,
+    transactionId = transactionId
+)

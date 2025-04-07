@@ -6,6 +6,7 @@ import com.jimmy.avowsstore.core.data.Empty
 import com.jimmy.avowsstore.core.data.Result
 import com.jimmy.avowsstore.core.network.constructRoute
 import com.jimmy.avowsstore.core.network.safeCall
+import com.jimmy.avowsstore.data.local.SharedPreferenceManager
 import com.jimmy.avowsstore.data.remote.dto.LoginDto
 import com.jimmy.avowsstore.domain.mappers.toLogin
 import com.jimmy.avowsstore.domain.model.Login
@@ -32,13 +33,18 @@ class AuthRepositoryImpl(
         }
         when(result) {
             is Result.Error -> {
+                if(DataError.HttpError.UNAUTHORIZED == result.error) {
+                    return Result.Error(DataError.HttpError.CONFLICT_LOGIN)
+                }
                 return Result.Error(result.error)
             }
             is Result.Success -> {
-                return Result.Success(result.data.toLogin(
+                val dataLogin = result.data.toLogin(
                     userId = Constant.USER_ID,
                     username = username
-                ))
+                )
+
+                return Result.Success(dataLogin)
             }
         }
     }

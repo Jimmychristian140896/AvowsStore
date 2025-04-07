@@ -26,13 +26,19 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import coil.compose.AsyncImage
+import com.jimmy.avowsstore.R
 import com.jimmy.avowsstore.core.util.toFormattedCurrency
+import com.jimmy.avowsstore.core.util.toFormattedString
+import com.jimmy.avowsstore.core.util.toFormattedTime
+import com.jimmy.avowsstore.core.util.toLocalDateTime
 import com.jimmy.avowsstore.domain.model.TransactionProduct
 import com.jimmy.avowsstore.presentation.cart.CartAction
 import com.jimmy.avowsstore.presentation.cart.CartState
@@ -58,6 +64,12 @@ fun SummarySection(
     ) {
 
         state.transaction?.let {
+            item {
+                TransactionSection(
+                    state = state,
+                    onAction = onAction
+                )
+            }
             items(state.transaction.products) {
                 TransactionProductItem(
                     it, state, onAction
@@ -101,6 +113,7 @@ fun TransactionProductItem(
         AsyncImage(
             model = product.imageUrl,
             contentDescription = product.name,
+            placeholder = painterResource(R.drawable.ic_image_placeholder),
             modifier = Modifier
                 .size(80.dp)
                 .clip(RoundedCornerShape(8.dp))
@@ -161,7 +174,7 @@ fun SummaryProductSection(
             .padding(16.dp)
     ) {
         Text(
-            text = "Summary",
+            text = stringResource(R.string.summary),
             fontSize = 16.sp,
             color = Black,
             fontWeight = FontWeight.Bold,
@@ -176,14 +189,17 @@ fun SummaryProductSection(
             verticalAlignment = Alignment.CenterVertically
         ) {
             Text(
-                text = "Total (${state.transaction?.products?.size})",
+                text = stringResource(R.string.total_value, state.transaction?.products?.size?.toString() ?: "0"),
                 modifier = Modifier
                     .wrapContentSize(),
                 color = Gray,
                 fontWeight = FontWeight.Normal,
                 fontSize = 14.sp
             )
-            Spacer(Modifier.weight(1f).fillMaxWidth())
+            Spacer(
+                Modifier
+                    .weight(1f)
+                    .fillMaxWidth())
             Text(
                 text = state.transaction?.products?.sumOf { it.price*it.quantity }?.toFormattedCurrency() ?: "",
                 modifier = Modifier
@@ -193,6 +209,73 @@ fun SummaryProductSection(
                 fontSize = 16.sp
             )
         }
+
+    }
+}
+
+
+
+@Composable
+fun TransactionSection(
+    state: SummaryState,
+    onAction: (SummaryAction) -> Unit,
+    modifier: Modifier = Modifier) {
+    Column(
+        modifier = Modifier
+            .padding(16.dp)
+    ) {
+        Text(
+            text = stringResource(R.string.transaction),
+            fontSize = 16.sp,
+            color = Black,
+            fontWeight = FontWeight.Bold,
+            modifier = Modifier
+                .fillMaxWidth()
+        )
+        Spacer(Modifier.height(16.dp))
+
+
+        Row(
+            modifier = Modifier,
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            Text(
+                text = stringResource(R.string.date),
+                modifier = Modifier
+                    .wrapContentSize(),
+                color = Gray,
+                fontWeight = FontWeight.Normal,
+                fontSize = 14.sp
+            )
+            Spacer(
+                Modifier
+                    .weight(1f)
+                    .fillMaxWidth())
+            Text(
+                text = state.transaction?.date?.toLocalDateTime()?.toFormattedString() ?: "",
+                modifier = Modifier
+                    .wrapContentSize(),
+                color = Black,
+                fontWeight = FontWeight.Bold,
+                fontSize = 16.sp
+            )
+        }
+        Spacer(Modifier.height(16.dp))
+        HorizontalDivider(
+            thickness = 1.dp,
+            color = LightDivider
+        )
+
+        Spacer(Modifier.height(16.dp))
+        Text(
+            text = stringResource(R.string.products),
+            fontSize = 16.sp,
+            color = Black,
+            fontWeight = FontWeight.Bold,
+            modifier = Modifier
+                .fillMaxWidth()
+        )
+
 
     }
 }

@@ -13,6 +13,15 @@ fun String.capitalizeWords(): String {
     return this.lowercase().split(" ").joinToString(" ") { it.replaceFirstChar { c -> c.uppercase() } }
 }
 
+fun String.toLocalDateTime(): LocalDateTime {
+    return LocalDateTime.parse(this, DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss", Locale.getDefault()))
+}
+
+
+fun LocalDateTime.toServerDate(): String {
+    val formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss", Locale.getDefault())
+    return format(formatter)
+}
 
 fun LocalDateTime.toFormattedString(): String {
     val formatter = DateTimeFormatter.ofPattern("dd MMM yyyy, HH:mm", Locale.getDefault())

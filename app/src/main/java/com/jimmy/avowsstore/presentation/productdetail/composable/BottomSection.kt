@@ -13,9 +13,11 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color.Companion.White
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.jimmy.avowsstore.R
 import com.jimmy.avowsstore.presentation.productdetail.ProductDetailAction
 import com.jimmy.avowsstore.presentation.productdetail.ProductDetailState
 import com.jimmy.avowsstore.ui.theme.Green
@@ -49,12 +51,12 @@ fun BottomSection(
         ) {
             if(state.isLoadingAddToCart) {
                 CircularProgressIndicator(
-                    modifier = Modifier
-                        .size(16.dp)
+                    color = White,
+                    modifier = Modifier.size(24.dp)
                 )
             } else {
                 Text(
-                    text = "+ Keranjang",
+                    text = stringResource(R.string.plus_cart),
                     color = White,
                     fontSize = 14.sp,
                     fontWeight = FontWeight.Bold

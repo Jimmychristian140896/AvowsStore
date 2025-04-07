@@ -16,12 +16,13 @@ import com.jimmy.avowsstore.presentation.summary.SummaryScreenRoot
 @Composable
 fun AppNavigation(
     navHostController: NavHostController = rememberNavController(),
+    isLogin: Boolean,
     modifier: Modifier = Modifier) {
 
     NavHost(
         modifier = modifier,
         navController = navHostController,
-        startDestination = Route.Main
+        startDestination = if(isLogin) Route.Main else Route.Auth
     ) {
         navigation<Route.Auth>(
             startDestination = Route.Login

@@ -28,8 +28,10 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color.Companion.White
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.jimmy.avowsstore.R
 import com.jimmy.avowsstore.presentation.products.ProductsAction
 import com.jimmy.avowsstore.presentation.products.ProductsState
 import com.jimmy.avowsstore.ui.theme.Black
@@ -45,14 +47,15 @@ fun HeaderSection(
     Row(
         modifier = modifier
             .fillMaxWidth()
-            .padding(16.dp),
+            .padding(8.dp),
         verticalAlignment = Alignment.CenterVertically
     ) {
         Text(
-            text = "Products",
+            text = stringResource(R.string.products),
             fontSize = 16.sp,
             color = Black,
             modifier = Modifier
+                .padding(start = 8.dp)
                 .weight(1f)
                 .fillMaxWidth()
         )
@@ -69,7 +72,7 @@ fun HeaderSection(
             ) {
                 Icon(
                     imageVector = Icons.Default.ShoppingCart,
-                    contentDescription = "Cart"
+                    contentDescription = stringResource(R.string.cart)
                 )
             }
             if(state.isLoadingCartCount) {
@@ -98,7 +101,7 @@ fun HeaderSection(
         ) {
             Icon(
                 imageVector = Icons.Rounded.Person,
-                contentDescription = "Profile"
+                contentDescription = stringResource(R.string.profile)
             )
         }
     }

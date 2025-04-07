@@ -27,11 +27,14 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import coil.compose.AsyncImage
+import com.jimmy.avowsstore.R
 import com.jimmy.avowsstore.core.util.shimmerEffect
 import com.jimmy.avowsstore.core.util.toFormattedCurrency
 import com.jimmy.avowsstore.core.util.toSimpleReadableCount
@@ -92,6 +95,7 @@ fun ProductItem(
         AsyncImage(
             model = product.imageUrl,
             contentDescription = product.name,
+            placeholder = painterResource(R.drawable.ic_image_placeholder),
             //contentScale = ContentScale.FillBounds,
             modifier = Modifier
                 .fillMaxWidth()
@@ -126,7 +130,7 @@ fun ProductItem(
         ) {
             Icon(
                 imageVector = Icons.Default.Star,
-                contentDescription = "Rating",
+                contentDescription = stringResource(R.string.rating),
                 tint = Yellow,
                 modifier = Modifier.size(16.dp)
             )
@@ -152,7 +156,7 @@ fun ProductLoadingItem(
     Column(
         modifier = modifier
             .fillMaxWidth()
-            .clip(RoundedCornerShape(8.dp))
+            //.clip(RoundedCornerShape(8.dp))
     ) {
         Box(
             modifier = Modifier

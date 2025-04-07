@@ -16,15 +16,20 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
+import com.jimmy.avowsstore.R
+import com.jimmy.avowsstore.core.composable.GeneralErrorSection
 import com.jimmy.avowsstore.core.composable.ObserveAsEvents
 import com.jimmy.avowsstore.core.ui.SnackBarAction
 import com.jimmy.avowsstore.core.ui.SnackBarController
 import com.jimmy.avowsstore.core.ui.SnackBarEvent
 import com.jimmy.avowsstore.core.ui.showToast
 import com.jimmy.avowsstore.navigation.Route
+import com.jimmy.avowsstore.presentation.productdetail.composable.BottomLoadingSection
 import com.jimmy.avowsstore.presentation.productdetail.composable.BottomSection
+import com.jimmy.avowsstore.presentation.productdetail.composable.DetailLoadingSection
 import com.jimmy.avowsstore.presentation.productdetail.composable.DetailSection
 import com.jimmy.avowsstore.presentation.productdetail.composable.HeaderSection
+import com.jimmy.avowsstore.presentation.products.ProductsAction
 import com.jimmy.avowsstore.presentation.products.ProductsEvent
 import com.jimmy.avowsstore.ui.theme.LightDivider
 import kotlinx.coroutines.launch
@@ -53,9 +58,9 @@ fun ProductDetailScreenRoot(
                 coroutineScope.launch {
                     SnackBarController.sendEvent(
                         SnackBarEvent(
-                            message = "Added to Cart",
+                            message = context.getString(R.string.added_to_cart),
                             action = SnackBarAction(
-                                name = "Open Cart",
+                                name = context.getString(R.string.open_cart),
                                 action = {
                                     viewModel.onAction(ProductDetailAction.CartClicked)
                                 }
@@ -110,22 +115,44 @@ fun ProductDetailScreen(
             modifier = Modifier
                 .fillMaxWidth()
         )
-        DetailSection(
-            state = state,
-            onAction = onAction,
-            modifier = Modifier
-                .weight(1f)
-        )
 
-        HorizontalDivider(
-            color = LightDivider,
-            thickness = 1.dp,
-            modifier = Modifier
-                .fillMaxWidth()
-        )
-        BottomSection(
-            state = state,
-            onAction = onAction
-        )
+        if(state.isLoading) {
+            DetailLoadingSection(
+                modifier = Modifier
+                    .weight(1f)
+            )
+            HorizontalDivider(
+                color = LightDivider,
+                thickness = 1.dp,
+                modifier = Modifier
+                    .fillMaxWidth()
+            )
+            BottomLoadingSection()
+        } else if(state.error != null) {
+            GeneralErrorSection(
+                onTryAgain = {
+                    onAction(ProductDetailAction.OnTryAgain)
+                },
+                message = state.error.asString()
+            )
+        } else {
+            DetailSection(
+                state = state,
+                onAction = onAction,
+                modifier = Modifier
+                    .weight(1f)
+            )
+
+            HorizontalDivider(
+                color = LightDivider,
+                thickness = 1.dp,
+                modifier = Modifier
+                    .fillMaxWidth()
+            )
+            BottomSection(
+                state = state,
+                onAction = onAction
+            )
+        }
     }
 }

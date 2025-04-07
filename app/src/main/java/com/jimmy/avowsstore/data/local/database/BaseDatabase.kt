@@ -2,15 +2,17 @@ package com.jimmy.avowsstore.data.local.database
 
 import androidx.room.Database
 import androidx.room.RoomDatabase
-import com.jimmy.avowsstore.data.local.dao.UserDao
-import com.jimmy.avowsstore.data.local.entity.UserEntity
+import com.jimmy.avowsstore.data.local.dao.TransactionDao
+import com.jimmy.avowsstore.data.local.entity.TransactionEntity
+import com.jimmy.avowsstore.data.local.entity.TransactionProductEntity
 
 @Database(
     entities = [
-        UserEntity::class
+        TransactionEntity::class,
+        TransactionProductEntity::class
     ],
-    version = 1,
+    version = 3,
 )
 abstract class BaseDatabase: RoomDatabase() {
-    abstract fun userDao(): UserDao
+    abstract fun transactionDao(): TransactionDao
 }

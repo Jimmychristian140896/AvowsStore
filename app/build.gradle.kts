@@ -167,6 +167,7 @@ dependencies {
         //implementation("io.insert-koin:koin-compose-viewmodel-navigation")
 
         implementation("io.insert-koin:koin-androidx-compose")
+        //implementation("io.insert-koin:koin-androidx-viewmodel")
         implementation("io.insert-koin:koin-androidx-compose-navigation")
     implementation("io.insert-koin:koin-ktor")
     // SLF4J Logger

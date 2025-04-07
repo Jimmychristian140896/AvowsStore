@@ -10,9 +10,11 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.jimmy.avowsstore.R
 import com.jimmy.avowsstore.presentation.profile.ProfileAction
 import com.jimmy.avowsstore.presentation.profile.ProfileState
 import com.jimmy.avowsstore.ui.theme.Black
@@ -30,7 +32,7 @@ fun PersonalInfoSection(state: ProfileState,
                 .padding(16.dp)
         ) {
             Text(
-                text = "Personal Info",
+                text = stringResource(R.string.personal_info),
                 fontSize = 16.sp,
                 color = Black,
                 fontWeight = FontWeight.Bold,
@@ -45,7 +47,7 @@ fun PersonalInfoSection(state: ProfileState,
                 verticalAlignment = Alignment.CenterVertically
             ) {
                 Text(
-                    text = "User ID",
+                    text = stringResource(R.string.user_id),
                     modifier = Modifier
                         .weight(1f)
                         .fillMaxWidth(),
@@ -69,7 +71,7 @@ fun PersonalInfoSection(state: ProfileState,
                 verticalAlignment = Alignment.CenterVertically
             ) {
                 Text(
-                    text = "E-mail",
+                    text = stringResource(R.string.e_mail),
                     modifier = Modifier
                         .weight(1f)
                         .fillMaxWidth(),
@@ -93,7 +95,7 @@ fun PersonalInfoSection(state: ProfileState,
                 verticalAlignment = Alignment.CenterVertically
             ) {
                 Text(
-                    text = "Phone Number",
+                    text = stringResource(R.string.phone_number),
                     modifier = Modifier
                         .weight(1f)
                         .fillMaxWidth(),

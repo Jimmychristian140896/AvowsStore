@@ -2,6 +2,7 @@ package com.jimmy.avowsstore.presentation.cart.composable
 
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -23,16 +24,21 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import coil.compose.AsyncImage
+import com.jimmy.avowsstore.R
+import com.jimmy.avowsstore.core.util.shimmerEffect
 import com.jimmy.avowsstore.core.util.toFormattedCurrency
 import com.jimmy.avowsstore.domain.model.CartProduct
 import com.jimmy.avowsstore.presentation.cart.CartAction
 import com.jimmy.avowsstore.presentation.cart.CartState
+import com.jimmy.avowsstore.presentation.products.composable.ProductLoadingItem
 import com.jimmy.avowsstore.ui.theme.Black
 import com.jimmy.avowsstore.ui.theme.Gray
 
@@ -50,13 +56,15 @@ fun CartSection(
 
     ) {
 
-        state.cart?.let {
-            items(state.cart.products) {
-                CartProductItem(
-                    it, state, onAction
-                )
+
+            state.cart?.let {
+                items(state.cart.products) {
+                    CartProductItem(
+                        it, state, onAction
+                    )
+                }
             }
-        }
+
 
     }
 }
@@ -83,6 +91,7 @@ fun CartProductItem(
         AsyncImage(
             model = product.imageUrl,
             contentDescription = product.name,
+            placeholder = painterResource(R.drawable.ic_image_placeholder),
             modifier = Modifier
                 .size(80.dp)
                 .clip(RoundedCornerShape(8.dp))
@@ -144,7 +153,7 @@ fun CartProductItem(
                     } else {
                         Icon(
                             imageVector = Icons.Default.Delete,
-                            contentDescription = "Delete",
+                            contentDescription = stringResource(R.string.delete),
                             tint = Black,
                             modifier = Modifier
                                 .size(16.dp)
@@ -183,3 +192,6 @@ fun CartProductItem(
         }
     }
 }
+
+
+

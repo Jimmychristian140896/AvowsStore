@@ -11,6 +11,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
+import com.jimmy.avowsstore.core.composable.GeneralErrorSection
 import com.jimmy.avowsstore.core.composable.ObserveAsEvents
 import com.jimmy.avowsstore.navigation.Route
 import com.jimmy.avowsstore.presentation.products.composable.CategorySection
@@ -37,6 +38,9 @@ fun ProductsScreenRoot(
             }
             is ProductsEvent.CartClicked -> {
                 navHostController.navigate(Route.Cart)
+            }
+            is ProductsEvent.Logout -> {
+                navHostController.navigate(Route.Auth)
             }
             else -> {
             }
@@ -73,23 +77,35 @@ fun ProductsScreen(
             state = state,
             onAction = onAction
         )
+        if(state.errorCategories != null || state.errorProducts != null) {
+            GeneralErrorSection(
+                onTryAgain = {
+                    onAction(ProductsAction.OnTryAgain)
+                },
+                message = if(state.errorCategories != null) state.errorCategories.asString() else state.errorProducts?.asString()
+            )
+        } else {
 
-        CategorySection(
-            state = state,
-            onAction = onAction
-        )
+            CategorySection(
+                state = state,
+                onAction = onAction
+            )
 
 
-        ProductsSection(
-            state = state,
-            onAction = onAction
-        )
+            ProductsSection(
+                state = state,
+                onAction = onAction
+            )
+        }
 
     }
     if(state.showProfileDialog) {
         ProfileScreenBottomSheet(
             onDismiss = {
                 onAction(ProductsAction.DismissProfileDialog)
+            },
+            onLogout = {
+                onAction(ProductsAction.Logout)
             }
         )
     }

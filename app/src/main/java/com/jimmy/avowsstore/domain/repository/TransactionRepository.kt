@@ -7,5 +7,6 @@ import com.jimmy.avowsstore.domain.model.Transaction
 
 interface TransactionRepository {
     suspend fun getTransactionById(id: String): Result<Transaction, DataError>
+    suspend fun saveTransaction(cart: Cart): Result<String, DataError>
 
 }

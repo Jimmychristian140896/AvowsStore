@@ -53,6 +53,13 @@ class SummaryViewModel(
                     _eventChannel.send(SummaryEvent.Close)
                 }
             }
+
+            SummaryAction.OnTryAgain -> {
+                _state.update { it.copy(
+                    error = null,
+                ) }
+                getTransaction(id)
+            }
             else -> TODO("Handle actions")
         }
     }

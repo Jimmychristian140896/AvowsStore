@@ -8,13 +8,13 @@ import org.koin.dsl.module
 
 val databaseModule = module {
     singleOf(::provideDatabase)
-    singleOf(::provideUserDao)
+    singleOf(::provideTransactionDao)
 }
 
 fun provideDatabase(context: Context) = Room.databaseBuilder(
     context,
     BaseDatabase::class.java,
     "base.db"
-).build()
+).fallbackToDestructiveMigration().build()
 
-fun provideUserDao(database: BaseDatabase) = database.userDao()
+fun provideTransactionDao(database: BaseDatabase) = database.transactionDao()

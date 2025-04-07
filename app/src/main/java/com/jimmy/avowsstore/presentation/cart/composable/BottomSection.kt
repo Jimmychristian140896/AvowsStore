@@ -4,21 +4,26 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.layout.widthIn
 import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.layout.wrapContentWidth
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color.Companion.White
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.jimmy.avowsstore.R
 import com.jimmy.avowsstore.core.util.toFormattedCurrency
 import com.jimmy.avowsstore.presentation.cart.CartAction
 import com.jimmy.avowsstore.presentation.cart.CartState
@@ -56,22 +61,35 @@ fun BottomSection(
 
         Button(
             onClick = {
-                onAction(CartAction.OnCheckout)
+                if(!state.isLoadingCheckout) {
+                    onAction(CartAction.OnCheckout)
+                }
             },
             modifier = Modifier
-                .wrapContentSize(),
+                .wrapContentSize()
+                .widthIn(min = 100.dp),
             //.padding(horizontal = 16.dp, vertical = 8.dp),
             colors = ButtonDefaults.buttonColors(
                 containerColor = Green
             ),
             shape = RoundedCornerShape(8.dp)
         ) {
-            Text(
-                text = "Checkout"+if(state.cart?.products?.isNotEmpty() == true) " (${state.cart.products.size})" else "",
-                color = White,
-                fontSize = 14.sp,
-                fontWeight = FontWeight.Bold
-            )
+
+            if(state.isLoadingCheckout) {
+                CircularProgressIndicator(
+                    color = White,
+                    modifier = Modifier.size(24.dp)
+                )
+            } else {
+                Text(
+                    text = stringResource(R.string.checkout)
+                            +if(state.cart?.products?.isNotEmpty() == true) " (${state.cart.products.size})" else "",
+                    color = White,
+                    fontSize = 14.sp,
+                    fontWeight = FontWeight.Bold
+                )
+            }
+
         }
     }
 
