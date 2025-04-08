@@ -13,4 +13,5 @@ sealed interface ProductsAction {
     data object GetCategories : ProductsAction
     data object GetProducts : ProductsAction
     data object OnTryAgain : ProductsAction
+    data object OnPullToRefresh : ProductsAction
 }

@@ -15,8 +15,6 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.jimmy.avowsstore.R
-import com.jimmy.avowsstore.presentation.cart.CartAction
-import com.jimmy.avowsstore.presentation.cart.CartState
 import com.jimmy.avowsstore.presentation.summary.SummaryAction
 import com.jimmy.avowsstore.presentation.summary.SummaryState
 import com.jimmy.avowsstore.ui.theme.Black
@@ -37,7 +35,7 @@ fun HeaderSection(
 
         IconButton(
             onClick = {
-                onAction(SummaryAction.Close)
+                onAction(SummaryAction.NavigateBack)
             }
         ) {
             Icon(

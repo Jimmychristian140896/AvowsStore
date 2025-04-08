@@ -7,6 +7,7 @@ import com.jimmy.avowsstore.core.data.onFailure
 import com.jimmy.avowsstore.core.data.onSuccess
 import com.jimmy.avowsstore.domain.repository.CartRepository
 import com.jimmy.avowsstore.domain.repository.TransactionRepository
+import com.jimmy.avowsstore.presentation.productdetail.ProductDetailAction
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
@@ -43,7 +44,7 @@ class CartViewModel(
 
     fun onAction(action: CartAction) {
         when (action) {
-            /*is CartAction.OnProductCheckedChange -> {
+            is CartAction.OnProductCheckedChange -> {
                 viewModelScope.launch {
                     val products = state.value.cart?.products?.map {
                         if (it.id == action.cartProduct.id) {
@@ -63,7 +64,7 @@ class CartViewModel(
                         )
                     }
                 }
-            }*/
+            }
 
             is CartAction.OnProductDelete -> {
                 /*val products = state.value.cart?.products?.toMutableList()
@@ -127,13 +128,21 @@ class CartViewModel(
 
             CartAction.OnCheckout -> {
                 viewModelScope.launch {
-                    _state.update {
-                        it.copy(
-                            isLoadingCheckout = true
-                        )
-                    }
+
                     _state.value.cart?.let {
-                        transactionRepository.saveTransaction(it)
+                        if(it.products.any { it.isChecked } ==  false) {
+                            _eventChannel.send(CartEvent.OnNoProductSelected)
+                            return@launch
+                        }
+
+                        _state.update {
+                            it.copy(
+                                isLoadingCheckout = true
+                            )
+                        }
+                        transactionRepository.saveTransaction(it.copy(
+                            products = it.products.filter { it.isChecked }
+                        ))
                             .onSuccess {
                                 _state.update {
                                     it.copy(
@@ -174,6 +183,68 @@ class CartViewModel(
                 }
                 getCart()
             }
+
+            CartAction.OnCheckAll -> {
+                viewModelScope.launch {
+                    val products = state.value.cart?.products?.map {
+                        it.copy(
+                            isChecked = true
+                        )
+                    } ?: emptyList()
+                    _state.update {
+                        it.copy(
+                            cart = it.cart?.copy(
+                                products = products
+                            )
+                        )
+                    }
+                }
+            }
+            CartAction.OnUncheckAll -> {
+
+
+                viewModelScope.launch {
+                    val products = state.value.cart?.products?.map {
+                        it.copy(
+                            isChecked = false
+                        )
+                    } ?: emptyList()
+                    _state.update {
+                        it.copy(
+                            cart = it.cart?.copy(
+                                products = products
+                            )
+                        )
+                    }
+                }
+            }
+            CartAction.OnDeleteAllSelected -> {
+
+
+                val products = state.value.cart?.products?.mapNotNull {
+                    if (it.isChecked) {
+                        null
+                    } else {
+                        it
+                    }
+                } ?: emptyList()
+
+                _state.update {
+                    it.copy(
+                        cart = it.cart?.copy(
+                            products = products
+                        )
+                    )
+                }
+            }
+            CartAction.OnPullToRefresh -> {
+                viewModelScope.launch {
+                    _state.update { it.copy(
+                        isPullToRefresh = true
+                    ) }
+                    getCart()
+                }
+            }
             else -> TODO("Handle actions")
         }
     }
@@ -190,6 +261,7 @@ class CartViewModel(
                     _state.update {
                         it.copy(
                             isLoading = false,
+                            isPullToRefresh = false,
                             cart = cart
                         )
                     }
@@ -198,6 +270,7 @@ class CartViewModel(
                     _state.update {
                         it.copy(
                             isLoading = false,
+                            isPullToRefresh = false,
                             error = error.asUiText()
                         )
                     }

@@ -40,3 +40,4 @@ val Gray = Color.Gray
 val DarkGray = Color.DarkGray
 val LightGray = Color.LightGray
 val LightDivider  = Color(0xFFe5e5e5)
+val LightestDivider  = LightDivider.copy( alpha = 0.5f )

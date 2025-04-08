@@ -11,6 +11,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Lock
@@ -41,6 +42,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavHostController
+import coil.compose.AsyncImage
 import com.jimmy.avowsstore.R
 import com.jimmy.avowsstore.core.composable.ObserveAsEvents
 import com.jimmy.avowsstore.core.composable.ValidationTextField
@@ -69,7 +71,11 @@ fun LoginScreenRoot(
 
             LoginEvent.OnLoginSuccess -> {
                 context.showToast(context.getString(R.string.login_success))
-                navHostController.navigate(Route.Main)
+                navHostController.navigate(Route.Main) {
+                    popUpTo(Route.Auth) {
+                        inclusive = true
+                    }
+                }
             }
         }
     }
@@ -203,9 +209,10 @@ fun LoginScreen(
         Image(
             painter = painterResource(R.drawable.ic_avows_logo),
             contentDescription = stringResource(R.string.logo),
-            contentScale = ContentScale.Crop,
+            //contentScale = ContentScale.Crop,
             modifier = Modifier
-                .height(240.dp)
+                .width(240.dp)
+                .height(160.dp)
                 .align(Alignment.CenterHorizontally)
         )
         Text(

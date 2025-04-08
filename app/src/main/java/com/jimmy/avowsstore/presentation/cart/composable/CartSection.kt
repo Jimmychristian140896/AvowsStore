@@ -1,7 +1,17 @@
+@file:OptIn(ExperimentalMaterial3Api::class, ExperimentalMaterial3Api::class)
+
 package com.jimmy.avowsstore.presentation.cart.composable
 
+import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.core.tween
+import androidx.compose.animation.expandVertically
+import androidx.compose.animation.fadeIn
+import androidx.compose.animation.fadeOut
+import androidx.compose.animation.shrinkOut
+import androidx.compose.animation.shrinkVertically
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -18,8 +28,12 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Delete
+import androidx.compose.material3.Checkbox
+import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
+import androidx.compose.material3.pulltorefresh.PullToRefreshBox
+import androidx.compose.material3.pulltorefresh.rememberPullToRefreshState
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -27,6 +41,7 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.font.FontWeight.Companion.Bold
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
@@ -38,9 +53,11 @@ import com.jimmy.avowsstore.core.util.toFormattedCurrency
 import com.jimmy.avowsstore.domain.model.CartProduct
 import com.jimmy.avowsstore.presentation.cart.CartAction
 import com.jimmy.avowsstore.presentation.cart.CartState
+import com.jimmy.avowsstore.presentation.products.ProductsAction
 import com.jimmy.avowsstore.presentation.products.composable.ProductLoadingItem
 import com.jimmy.avowsstore.ui.theme.Black
 import com.jimmy.avowsstore.ui.theme.Gray
+import com.jimmy.avowsstore.ui.theme.Green
 
 @Composable
 fun CartSection(
@@ -48,13 +65,22 @@ fun CartSection(
     onAction: (CartAction) -> Unit,
     modifier: Modifier = Modifier
 ) {
-
-    LazyColumn(
+    val pullToRefreshState = rememberPullToRefreshState()
+    PullToRefreshBox(
+        state = pullToRefreshState,
+        isRefreshing = state.isPullToRefresh,
+        onRefresh = {
+            onAction(CartAction.OnPullToRefresh)
+        },
         modifier = modifier
-            .fillMaxSize(),
-        //verticalArrangement = Arrangement.spacedBy(16.dp)
-
+            .fillMaxSize()
     ) {
+        LazyColumn(
+            modifier = Modifier
+                .fillMaxSize(),
+            //verticalArrangement = Arrangement.spacedBy(16.dp)
+
+        ) {
 
 
             state.cart?.let {
@@ -65,6 +91,40 @@ fun CartSection(
                 }
             }
 
+
+        }
+    }
+}
+
+@Composable
+fun SelectedCountSection(
+    countChecked: Int,
+    state: CartState,
+    onAction: (CartAction) -> Unit,
+    modifier: Modifier = Modifier
+) {
+    Row(
+        modifier = modifier
+            .fillMaxWidth()
+            .padding(16.dp),
+        horizontalArrangement = Arrangement.SpaceBetween
+    ) {
+        Text(
+            text = "$countChecked selected product",
+            fontSize = 12.sp,
+            color = Black
+        )
+
+        Text(
+            text = stringResource(R.string.delete),
+            fontSize = 12.sp,
+            color = Green,
+            fontWeight = Bold,
+            modifier = Modifier
+                .clickable {
+                    onAction(CartAction.OnDeleteAllSelected)
+                }
+        )
 
     }
 }
@@ -81,13 +141,13 @@ fun CartProductItem(
             .fillMaxWidth()
             .padding(16.dp)
     ) {
-        /*Checkbox(
-            checked = cartProduct.isChecked,
+        Checkbox(
+            checked = product.isChecked,
             onCheckedChange = {
-                onAction(CartAction.OnProductCheckedChange(cartProduct))
+                onAction(CartAction.OnProductCheckedChange(product))
             }
         )
-        Spacer(Modifier.width(16.dp))*/
+        Spacer(Modifier.width(16.dp))
         AsyncImage(
             model = product.imageUrl,
             contentDescription = product.name,
@@ -136,7 +196,7 @@ fun CartProductItem(
                         .padding(horizontal = 16.dp, vertical = 8.dp),
                     verticalAlignment = Alignment.CenterVertically
                 ) {
-                    if(product.quantity > 1) {
+                    if (product.quantity > 1) {
                         Text(
                             text = "-",
                             fontSize = 18.sp,

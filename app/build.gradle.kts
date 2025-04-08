@@ -148,41 +148,36 @@ dependencies {
     debugImplementation(libs.androidx.ui.tooling)
     debugImplementation(libs.androidx.ui.test.manifest)
 
-    implementation("io.github.vanpra.compose-material-dialogs:datetime:0.9.0")
-    implementation("io.coil-kt:coil-compose:2.1.0")
+    implementation(libs.datetime)
+    implementation(libs.coil.compose)
 
-    implementation(project.dependencies.platform("io.insert-koin:koin-bom:3.5.0"))
-    implementation("io.insert-koin:koin-core")
-    implementation("io.insert-koin:koin-android")
-    implementation("io.insert-koin:koin-android-compat")
+    implementation(platform(libs.koin.bom))
+    implementation(libs.koin.core)
+    implementation(libs.koin.android)
+    implementation(libs.koin.android.compat)
     // Jetpack WorkManager
-    implementation("io.insert-koin:koin-androidx-workmanager")
+    implementation(libs.koin.androidx.workmanager)
     // Navigation Graph
-    implementation("io.insert-koin:koin-androidx-navigation")
+    implementation(libs.koin.androidx.navigation)
     // App Startup
     //implementation("io.insert-koin:koin-androidx-startup")
 
-        implementation("io.insert-koin:koin-compose")
-        //implementation("io.insert-koin:koin-compose-viewmodel")
-        //implementation("io.insert-koin:koin-compose-viewmodel-navigation")
+    implementation(libs.koin.compose)
+    //implementation("io.insert-koin:koin-compose-viewmodel")
+    //implementation("io.insert-koin:koin-compose-viewmodel-navigation")
 
-        implementation("io.insert-koin:koin-androidx-compose")
-        //implementation("io.insert-koin:koin-androidx-viewmodel")
-        implementation("io.insert-koin:koin-androidx-compose-navigation")
-    implementation("io.insert-koin:koin-ktor")
-    // SLF4J Logger
-    //implementation("io.insert-koin:koin-logger-slf4j")
+    implementation(libs.koin.androidx.compose)
+    //implementation("io.insert-koin:koin-androidx-viewmodel")
+    implementation(libs.koin.androidx.compose.navigation)
 
     // Works with test libraries too!
-    testImplementation("io.insert-koin:koin-test-junit4")
-    testImplementation("io.insert-koin:koin-android-test")
+    testImplementation(libs.koin.test.junit4)
+    testImplementation(libs.koin.android.test)
 
 
-    val compose_version = "1.5.0"
 
-    implementation("androidx.compose.material:material-icons-core:$compose_version")
-    implementation("androidx.compose.material:material-icons-extended:$compose_version")
-
+    implementation(libs.androidx.material.icons.core)
+    implementation(libs.androidx.material.icons.extended)
 
 
 }

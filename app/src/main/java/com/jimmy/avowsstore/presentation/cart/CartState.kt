@@ -8,6 +8,7 @@ data class CartState(
     val cart: Cart? = null,
     val error: UiText? = null,
     val isLoadingCheckout: Boolean = false,
-    val errorCheckout: UiText? = null
+    val errorCheckout: UiText? = null,
+    val isPullToRefresh: Boolean = false
 
 )

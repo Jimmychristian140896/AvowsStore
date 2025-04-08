@@ -16,5 +16,6 @@ data class ProductsState(
     val showProfileDialog: Boolean = false,
     val isLoadingCartCount: Boolean = false,
     val errorCartCount: UiText? = null,
-    val cartCount: Int = 0
+    val cartCount: Int = 0,
+    val isPullToRefresh: Boolean = false
 )

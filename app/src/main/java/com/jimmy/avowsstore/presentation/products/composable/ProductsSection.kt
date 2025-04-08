@@ -1,3 +1,5 @@
+@file:OptIn(ExperimentalMaterial3Api::class)
+
 package com.jimmy.avowsstore.presentation.products.composable
 
 import androidx.compose.foundation.clickable
@@ -20,9 +22,17 @@ import androidx.compose.foundation.lazy.grid.rememberLazyGridState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Star
+import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
+import androidx.compose.material3.pulltorefresh.PullToRefreshBox
+import androidx.compose.material3.pulltorefresh.rememberPullToRefreshState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -45,45 +55,59 @@ import com.jimmy.avowsstore.ui.theme.Black
 import com.jimmy.avowsstore.ui.theme.Gray
 import com.jimmy.avowsstore.ui.theme.TextColor
 import com.jimmy.avowsstore.ui.theme.Yellow
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 
 @Composable
 fun ProductsSection(
     state: ProductsState,
     onAction: (ProductsAction) -> Unit,
-    modifier: Modifier = Modifier) {
+    modifier: Modifier = Modifier
+) {
     val lazyState = rememberLazyGridState()
-    LazyVerticalGrid(
-        modifier = modifier
-            .fillMaxSize(),
-        state = lazyState,
-        columns = GridCells.Fixed(2),
-        contentPadding = PaddingValues(16.dp),
-        verticalArrangement = Arrangement.spacedBy(16.dp),
-        horizontalArrangement = Arrangement.spacedBy(16.dp)
+    val pullToRefreshState = rememberPullToRefreshState()
+    PullToRefreshBox(
+        state = pullToRefreshState,
+        isRefreshing = state.isPullToRefresh,
+        onRefresh = {
+            onAction(ProductsAction.OnPullToRefresh)
+        }
     ) {
-        if(state.isLoadingProducts) {
-            items(6) {
-                ProductLoadingItem()
-            }
-        } else {
-            items(state.products) {
-                ProductItem(
-                    product = it,
-                    onClick = {
-                        onAction(ProductsAction.ProductClicked(it))
-                    }
-                )
+        LazyVerticalGrid(
+            modifier = modifier
+                .fillMaxSize(),
+            state = lazyState,
+            columns = GridCells.Fixed(2),
+            contentPadding = PaddingValues(16.dp),
+            verticalArrangement = Arrangement.spacedBy(16.dp),
+            horizontalArrangement = Arrangement.spacedBy(16.dp)
+        ) {
+            if (state.isLoadingProducts) {
+                items(6) {
+                    ProductLoadingItem()
+                }
+            } else {
+                items(state.products) {
+                    ProductItem(
+                        product = it,
+                        onClick = {
+                            onAction(ProductsAction.ProductClicked(it))
+                        }
+                    )
 
+                }
             }
         }
     }
+
 }
 
 @Composable
 fun ProductItem(
     product: Product,
     onClick: () -> Unit,
-    modifier: Modifier = Modifier) {
+    modifier: Modifier = Modifier
+) {
     Column(
         modifier = modifier
             .fillMaxWidth()
@@ -152,11 +176,12 @@ fun ProductItem(
 
 @Composable
 fun ProductLoadingItem(
-    modifier: Modifier = Modifier) {
+    modifier: Modifier = Modifier
+) {
     Column(
         modifier = modifier
             .fillMaxWidth()
-            //.clip(RoundedCornerShape(8.dp))
+        //.clip(RoundedCornerShape(8.dp))
     ) {
         Box(
             modifier = Modifier
