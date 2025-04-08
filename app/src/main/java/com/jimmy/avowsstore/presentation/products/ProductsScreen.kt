@@ -43,7 +43,11 @@ fun ProductsScreenRoot(
                 navHostController.navigate(Route.Cart)
             }
             is ProductsEvent.Logout -> {
-                navHostController.navigate(Route.Auth)
+                navHostController.navigate(Route.Auth) {
+                    popUpTo(Route.Main) {
+                        inclusive = true
+                    }
+                }
             }
             else -> {
             }

@@ -67,7 +67,7 @@ fun BottomSection(
             modifier = Modifier
         )
         Text(
-            text = state.cart?.products?.filter { it.isChecked }?.sumOf { it.price*it.quantity }?.toFormattedCurrency() ?: "",
+            text = state.cart?.products?.filter { it.isChecked }?.sumOf { it.price*it.quantity }?.toFormattedCurrency() ?: "-",
             color = Black,
             fontSize = 18.sp,
             fontWeight = FontWeight.Bold,
@@ -86,7 +86,7 @@ fun BottomSection(
             },
             modifier = Modifier
                 .wrapContentSize()
-                .widthIn(min = 100.dp),
+                .widthIn(min = 160.dp),
             //.padding(horizontal = 16.dp, vertical = 8.dp),
             colors = ButtonDefaults.buttonColors(
                 containerColor = Green

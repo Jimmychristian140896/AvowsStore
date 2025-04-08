@@ -79,5 +79,8 @@
     <string name="logo">Logo</string>
     <string name="added_to_cart">Added to Cart</string>
     <string name="open_cart">Open Cart</string>
+    <string name="you_have_not_selected_any_items_for_checkout">You have not selected any items for checkout</string>
+    <string name="pay">Pay</string>
+    <string name="this_feature_will_be_available_in_a_future_update">This feature will be available in a future update.</string>
 
 </resources>

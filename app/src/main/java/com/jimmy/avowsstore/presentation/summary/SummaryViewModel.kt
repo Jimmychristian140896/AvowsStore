@@ -48,9 +48,9 @@ class SummaryViewModel(
 
     fun onAction(action: SummaryAction) {
         when (action) {
-            SummaryAction.Close -> {
+            SummaryAction.NavigateBack -> {
                 viewModelScope.launch {
-                    _eventChannel.send(SummaryEvent.Close)
+                    _eventChannel.send(SummaryEvent.NavigateBack)
                 }
             }
 
@@ -59,6 +59,13 @@ class SummaryViewModel(
                     error = null,
                 ) }
                 getTransaction(id)
+            }
+
+            SummaryAction.Pay -> {
+
+                viewModelScope.launch {
+                    _eventChannel.send(SummaryEvent.Pay)
+                }
             }
             else -> TODO("Handle actions")
         }

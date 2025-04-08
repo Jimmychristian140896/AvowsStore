@@ -128,12 +128,18 @@ class CartViewModel(
 
             CartAction.OnCheckout -> {
                 viewModelScope.launch {
-                    _state.update {
-                        it.copy(
-                            isLoadingCheckout = true
-                        )
-                    }
+
                     _state.value.cart?.let {
+                        if(it.products.any { it.isChecked } ==  false) {
+                            _eventChannel.send(CartEvent.OnNoProductSelected)
+                            return@launch
+                        }
+
+                        _state.update {
+                            it.copy(
+                                isLoadingCheckout = true
+                            )
+                        }
                         transactionRepository.saveTransaction(it.copy(
                             products = it.products.filter { it.isChecked }
                         ))

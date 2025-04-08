@@ -15,14 +15,14 @@ private val DarkColorScheme = darkColorScheme(
     primary = Green,
     secondary = LightGreen,
     tertiary = White,
-    onSurfaceVariant = Green
+    //onSurfaceVariant = Green
 )
 
 private val LightColorScheme = lightColorScheme(
     primary = Green,
     secondary = LightGreen,
     tertiary = White,
-    onSurfaceVariant = Green
+    //onSurfaceVariant = Green
 
 
     /* Other default colors to override
