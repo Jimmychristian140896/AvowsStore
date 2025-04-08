@@ -86,7 +86,7 @@ fun BottomSection(
             },
             modifier = Modifier
                 .wrapContentSize()
-                .widthIn(min = 160.dp),
+                .widthIn(min = 140.dp),
             //.padding(horizontal = 16.dp, vertical = 8.dp),
             colors = ButtonDefaults.buttonColors(
                 containerColor = Green

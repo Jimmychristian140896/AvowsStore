@@ -147,7 +147,7 @@ fun CartProductItem(
                 onAction(CartAction.OnProductCheckedChange(product))
             }
         )
-        Spacer(Modifier.width(16.dp))
+        Spacer(Modifier.width(8.dp))
         AsyncImage(
             model = product.imageUrl,
             contentDescription = product.name,
@@ -156,7 +156,7 @@ fun CartProductItem(
                 .size(80.dp)
                 .clip(RoundedCornerShape(8.dp))
         )
-        Spacer(Modifier.width(16.dp))
+        Spacer(Modifier.width(8.dp))
         Column(
             modifier = Modifier
                 .fillMaxWidth()
@@ -168,11 +168,12 @@ fun CartProductItem(
                 fontSize = 12.sp,
                 color = Black
             )
-            Spacer(Modifier.height(16.dp))
+            Spacer(Modifier.height(8.dp))
             Row(
                 modifier = Modifier
                     .fillMaxWidth(),
-                verticalAlignment = Alignment.CenterVertically
+                verticalAlignment = Alignment.CenterVertically,
+                horizontalArrangement = Arrangement.SpaceBetween
             ) {
 
                 Text(
@@ -183,11 +184,8 @@ fun CartProductItem(
                     color = Black,
                     fontWeight = FontWeight.Bold,
                     modifier = Modifier
-                        .weight(1f)
-                        .fillMaxWidth()
                 )
 
-                Spacer(Modifier.width(16.dp))
                 Row(
                     modifier = Modifier
                         .wrapContentWidth()

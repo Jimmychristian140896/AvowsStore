@@ -137,7 +137,7 @@ fun ProductItem(
             modifier = Modifier
                 .fillMaxWidth()
         )
-        Spacer(Modifier.height(8.dp))
+        Spacer(Modifier.height(4.dp))
         Text(
             text = product.price.toFormattedCurrency(),
             fontSize = 12.sp,
@@ -146,7 +146,7 @@ fun ProductItem(
             modifier = Modifier
                 .fillMaxWidth()
         )
-        Spacer(Modifier.height(8.dp))
+        Spacer(Modifier.height(4.dp))
         Row(
             modifier = Modifier
                 .fillMaxWidth(),
@@ -208,7 +208,7 @@ fun ProductLoadingItem(
                 .shimmerEffect()
 
         )
-        Spacer(Modifier.height(8.dp))
+        Spacer(Modifier.height(4.dp))
         Box(
             modifier = modifier
                 .width(80.dp)
@@ -217,7 +217,7 @@ fun ProductLoadingItem(
                 .shimmerEffect()
 
         )
-        Spacer(Modifier.height(8.dp))
+        Spacer(Modifier.height(4.dp))
         Box(
             modifier = modifier
                 .width(120.dp)
